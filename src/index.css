@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fredoka", ui-rounded, system-ui, sans-serif;
+  --font-body: "Nunito", ui-sans-serif, system-ui, sans-serif;
+  --color-leaf: #4f8a3c;
+  --color-leaf-light: #81c262;
+  --color-pot: #e07a5f;
+  --color-cream: #fdf6e3;
+  --color-ink: #2f3a2c;
+}
+
+body {
+  @apply bg-cream font-body text-ink;
+  background-image: radial-gradient(#e9dfc4 1px, transparent 1px);
+  background-size: 18px 18px;
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-3deg); }
+  50% { transform: rotate(3deg); }
+}
+
+@keyframes pop-in {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-wiggle {
+  animation: wiggle 0.6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.animate-pop-in {
+  animation: pop-in 0.3s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-wiggle,
+  .animate-pop-in {
+    animation: none;
+  }
+}
