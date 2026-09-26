@@ -2,6 +2,8 @@
 
 Upload a photo of your houseplant and a sarcastic cartoon plant roasts it, then gives you one real care tip.
 
+**Live demo:** https://rachelselbrede.github.io/roast-my-plant/
+
 - No backend, no API calls, no API key. All 20 roast + tip pairs live in `src/roasts.js`.
 - Your photo is only previewed locally in the browser and never uploaded anywhere.
 
@@ -10,8 +12,10 @@ Upload a photo of your houseplant and a sarcastic cartoon plant roasts it, then 
 ```bash
 npm install
 npm run dev      # http://localhost:5173
-npm run build    # static site in dist/, deploy anywhere (Netlify, Vercel, GitHub Pages)
+npm run build    # static site in dist/
 ```
+
+Every push to `main` automatically deploys to GitHub Pages via `.github/workflows/deploy.yml`.
 
 ## Where things live
 
