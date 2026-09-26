@@ -11,6 +11,9 @@ export default function App() {
   const [status, setStatus] = useState('idle') // 'idle' | 'loading' | 'done'
   const [roastIndex, setRoastIndex] = useState(-1)
   const [loadingMessage, setLoadingMessage] = useState('')
+  const [plantName, setPlantName] = useState('')
+  // The name at the moment of roasting, so typing doesn't rewrite a shown roast.
+  const [roastedName, setRoastedName] = useState('')
   const timerRef = useRef(null)
   const resultRef = useRef(null)
   const [soundOn, setSoundOn] = useState(
@@ -39,6 +42,7 @@ export default function App() {
     if (soundOn) unlockAudio()
     setLoadingMessage(loadingMessages[pickRandomIndex(loadingMessages.length)])
     setStatus('loading')
+    setRoastedName(plantName.trim())
     // On mobile the result sits below the upload area, so bring it into view.
     resultRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     timerRef.current = setTimeout(() => {
@@ -57,7 +61,7 @@ export default function App() {
           aria-pressed={soundOn}
           aria-label={soundOn ? 'Mute sound effects' : 'Turn on sound effects'}
           title={soundOn ? 'Sound on' : 'Sound off'}
-          className="absolute -top-4 right-0 rounded-full border-2 border-ink/20 bg-white/80 px-3 py-1 text-lg transition-colors hover:border-ink sm:top-0"
+          className="mb-2 ml-auto block rounded-full sm:absolute sm:right-0 sm:top-0 sm:mb-0 border-2 border-ink/20 bg-white/80 px-3 py-1 text-lg transition-colors hover:border-ink"
         >
           {soundOn ? '🔊' : '🔇'}
         </button>
@@ -72,6 +76,22 @@ export default function App() {
       <main className="mt-8 grid flex-1 items-start gap-8 md:grid-cols-2">
         <section className="flex flex-col gap-4">
           <PhotoUpload previewUrl={previewUrl} onFileSelected={handleFileSelected} />
+          <label className="flex flex-col gap-1">
+            <span className="text-sm font-semibold text-ink/70">
+              Plant's name <span className="font-normal">(optional)</span>
+            </span>
+            <input
+              type="text"
+              value={plantName}
+              onChange={(e) => setPlantName(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && previewUrl && status !== 'loading') roast()
+              }}
+              maxLength={30}
+              placeholder="e.g. Gerald"
+              className="rounded-2xl border-2 border-leaf/40 bg-white/80 px-4 py-2 text-lg focus:border-leaf focus:outline-none focus-visible:ring-4 focus-visible:ring-leaf-light/50"
+            />
+          </label>
           <button
             type="button"
             onClick={roast}
@@ -91,12 +111,13 @@ export default function App() {
             status={status}
             loadingMessage={loadingMessage}
             roast={roasts[roastIndex]}
+            plantName={roastedName}
           />
         </section>
       </main>
 
       <footer className="mt-10 text-center text-xs text-ink/50">
-        No plants were harmed. Your photo never leaves your device.
+        No plants were harmed in the making of this site.
       </footer>
     </div>
   )

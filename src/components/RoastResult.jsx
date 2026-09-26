@@ -1,8 +1,9 @@
 import BurnMeter from './BurnMeter.jsx'
 import Mascot from './Mascot.jsx'
+import { personalizeRoast } from '../roasts.js'
 
 // The mascot + speech bubble. Shows a loading message, the roast, or a prompt.
-export default function RoastResult({ status, loadingMessage, roast }) {
+export default function RoastResult({ status, loadingMessage, roast, plantName }) {
   const mood = status === 'loading' ? 'thinking' : status === 'done' ? 'smug' : 'idle'
 
   return (
@@ -24,9 +25,9 @@ export default function RoastResult({ status, loadingMessage, roast }) {
         {status === 'done' && (
           <>
             <p className="text-xs font-bold uppercase tracking-wider text-pot">
-              Diagnosis: {roast.problem}
+              Diagnosis{plantName && ` for ${plantName}`}: {roast.problem}
             </p>
-            <p className="mt-1 font-display text-xl leading-snug">"{roast.roast}"</p>
+            <p className="mt-1 font-display text-xl leading-snug">"{personalizeRoast(roast.roast, plantName)}"</p>
             <BurnMeter level={roast.burn} />
           </>
         )}

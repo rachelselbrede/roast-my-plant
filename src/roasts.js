@@ -164,6 +164,16 @@ export const loadingMessages = [
   'Warming up the roast…',
 ]
 
+// Work the plant's name into a roast, e.g. "Your plant is quietly quitting"
+// becomes "Gerald is quietly quitting". If the roast never mentions
+// "your/this plant", open with an exasperated "Oh, Gerald." instead.
+export function personalizeRoast(text, name) {
+  if (!name) return text
+  const plantRef = /\b(your|this) plant\b/gi
+  if (plantRef.test(text)) return text.replace(plantRef, name)
+  return `Oh, ${name}. ${text}`
+}
+
 // Pick a random index, avoiding the one we just showed.
 export function pickRandomIndex(length, excludeIndex = -1) {
   if (length <= 1) return 0
