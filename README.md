@@ -23,4 +23,6 @@ Every push to `main` automatically deploys to GitHub Pages via `.github/workflow
 - `src/App.jsx`: page layout and the upload → loading → roast flow
 - `src/components/PhotoUpload.jsx`: drag-and-drop / tap-to-upload (opens the camera on mobile)
 - `src/components/RoastResult.jsx`: speech bubble and care tip card
+- `src/components/BurnMeter.jsx`: 1–5 flame severity rating shown with each roast
 - `src/components/Mascot.jsx`: SVG plant mascot with idle / thinking / smug faces
+- `src/sound.js`: synthesized "ba-dum-tss" rimshot (Web Audio, no audio files); toggle with the 🔊 button

@@ -1,3 +1,4 @@
+import BurnMeter from './BurnMeter.jsx'
 import Mascot from './Mascot.jsx'
 
 // The mascot + speech bubble. Shows a loading message, the roast, or a prompt.
@@ -26,6 +27,7 @@ export default function RoastResult({ status, loadingMessage, roast }) {
               Diagnosis: {roast.problem}
             </p>
             <p className="mt-1 font-display text-xl leading-snug">"{roast.roast}"</p>
+            <BurnMeter level={roast.burn} />
           </>
         )}
 

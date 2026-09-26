@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import PhotoUpload from './components/PhotoUpload.jsx'
 import RoastResult from './components/RoastResult.jsx'
 import { roasts, loadingMessages, pickRandomIndex } from './roasts.js'
+import { playRimshot, unlockAudio } from './sound.js'
 
 const LOADING_DELAY_MS = 1600
 
@@ -12,6 +13,15 @@ export default function App() {
   const [loadingMessage, setLoadingMessage] = useState('')
   const timerRef = useRef(null)
   const resultRef = useRef(null)
+  const [soundOn, setSoundOn] = useState(
+    () => localStorage.getItem('roast-sound') !== 'off',
+  )
+
+  function toggleSound() {
+    const next = !soundOn
+    setSoundOn(next)
+    localStorage.setItem('roast-sound', next ? 'on' : 'off')
+  }
 
   // Clean up the object URL and any pending timer.
   useEffect(() => () => previewUrl && URL.revokeObjectURL(previewUrl), [previewUrl])
@@ -26,6 +36,7 @@ export default function App() {
 
   function roast() {
     clearTimeout(timerRef.current)
+    if (soundOn) unlockAudio()
     setLoadingMessage(loadingMessages[pickRandomIndex(loadingMessages.length)])
     setStatus('loading')
     // On mobile the result sits below the upload area, so bring it into view.
@@ -33,12 +44,23 @@ export default function App() {
     timerRef.current = setTimeout(() => {
       setRoastIndex((prev) => pickRandomIndex(roasts.length, prev))
       setStatus('done')
+      if (soundOn) playRimshot()
     }, LOADING_DELAY_MS)
   }
 
   return (
     <div className="mx-auto flex min-h-screen max-w-4xl flex-col px-4 py-8 sm:py-12">
-      <header className="text-center">
+      <header className="relative text-center">
+        <button
+          type="button"
+          onClick={toggleSound}
+          aria-pressed={soundOn}
+          aria-label={soundOn ? 'Mute sound effects' : 'Turn on sound effects'}
+          title={soundOn ? 'Sound on' : 'Sound off'}
+          className="absolute -top-4 right-0 rounded-full border-2 border-ink/20 bg-white/80 px-3 py-1 text-lg transition-colors hover:border-ink sm:top-0"
+        >
+          {soundOn ? '🔊' : '🔇'}
+        </button>
         <h1 className="font-display text-4xl font-bold text-leaf sm:text-5xl">
           Roast My Plant <span aria-hidden="true">🔥</span>
         </h1>
